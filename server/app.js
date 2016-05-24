@@ -1,10 +1,12 @@
 "use strict";
 
+const os = require('os');
 const path = require('path');
 const express = require('express');
 const multer = require('multer');
 const streamBuffers = require('stream-buffers');
 const csv = require('csv-parser');
+const split = require('split');
 const MongoClient = require('mongodb').MongoClient;
 
 const storage = multer.memoryStorage();
@@ -15,10 +17,6 @@ var db;
 
 app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'client/dist', 'index.html'))
-})
-
-app.get('/graph', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', 'client/dist', 'graph.html'))
 })
 
 app.post('/graph', (req, res) => {
@@ -36,33 +34,45 @@ app.post('/graph', (req, res) => {
 
 app.post('/files', upload.array('myfile'), (req, res) => {
 
-  var stream = new streamBuffers.ReadableStreamBuffer({
-    frequency: 10,
-    chunkSize: 2048
-  }); 
+  var data;
+  var signal, timestamp, value;
 
+  // TODO: this should be done asynchronously with streams
   for (var file of req.files){
-    stream.put(file.buffer)
-  }
-  stream.stop();
+    data = data || {};
+    var sensorName = file.originalname.split('-')[0];
+    var acquisitionTime = file.originalname.split('-')[1]; // not in use
 
-  stream
-    .pipe(csv())
-    .on('data', (data) => {
-      db.collection('analytics').save(data, (err, result) => {
-        if (err) return console.log(err);
+    data[sensorName] = {};
 
-        console.log('saved to database');
-  
-        res.redirect('/graph');
+    file.buffer.toString()
+      .split(os.EOL)
+      .forEach((line, index) => {
+        if (index > 0) {
+          var values = line.split(',');
+          signal = values[0];
+          timestamp = values[1];
+          value = values[2];
+
+          if (signal && timestamp && value) {
+            data[sensorName][signal] = data[sensorName][signal] || [];
+            data[sensorName][signal].push({timestamp, value});
+          }
+        }
       });
-    });
+  }
+
+  db.collection('analytics').save(data, (err, results) => {
+
+    if (err) return console.log(err);
+
+    console.log('saved to database');
+    res.send(results);
+  });
 })
 
 
 MongoClient.connect('mongodb://localhost/sensors', (err, database) => {
-  console.log(err, database);
-
   if (err) return console.log(err);
 
   db = database;
