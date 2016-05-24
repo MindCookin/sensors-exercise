@@ -5,6 +5,7 @@ const path = require('path');
 const express = require('express');
 const multer = require('multer');
 const streamBuffers = require('stream-buffers');
+const bodyParser = require('body-parser');
 const csv = require('csv-parser');
 const split = require('split');
 const MongoClient = require('mongodb').MongoClient;
@@ -19,10 +20,29 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'client/dist', 'index.html'))
 })
 
-app.post('/graph', (req, res) => {
+app.get('/graph', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'client/dist', 'graph.html'))
+})
+
+app.post('/graph', bodyParser.urlencoded(), (req, res) => {
+
+  console.log("request: ", req.body);
+  let query = {
+    name: req.body.name,
+    timestamp: {
+      $gt: req.body.from && new Date(req.body.from).getTime() || 0,
+      $lt: req.body.to && new Date(req.body.to).getTime() || Number.MAX_SAFE_INTEGER,
+    }
+  };
+
+  if (req.body.signal) {
+    query.signal = {'$in': (typeof req.body.signal !== 'string' ) ? req.body.signal : [req.body.signal]};
+  }
+
+  console.log(query)
 
   db.collection('analytics')
-    .find()
+    .find(query)
     .toArray((err, results) => {
 
       if (err) console.log(err);
@@ -34,35 +54,33 @@ app.post('/graph', (req, res) => {
 
 app.post('/files', upload.array('myfile'), (req, res) => {
 
-  var data;
-  var signal, timestamp, value;
+  let data, values, query = [];
+  let signal, timestamp, value;
 
   // TODO: this should be done asynchronously with streams
-  for (var file of req.files){
-    data = data || {};
-    var sensorName = file.originalname.split('-')[0];
-    var acquisitionTime = file.originalname.split('-')[1]; // not in use
+  for (let file of req.files){
 
-    data[sensorName] = {};
+    let name = file.originalname.split('-')[0];
+    let acquisitionTime = file.originalname.split('-')[1].replace('.csv', '');
 
     file.buffer.toString()
       .split(os.EOL)
       .forEach((line, index) => {
         if (index > 0) {
-          var values = line.split(',');
+          values = line.split(',');
           signal = values[0];
-          timestamp = values[1];
-          value = values[2];
+          timestamp = parseInt(values[1]);
+          value = parseInt(values[2]);
 
           if (signal && timestamp && value) {
-            data[sensorName][signal] = data[sensorName][signal] || [];
-            data[sensorName][signal].push({timestamp, value});
+            query.push({name, signal, timestamp, value})
           }
         }
       });
   }
 
-  db.collection('analytics').save(data, (err, results) => {
+  //TODO: Don't forget "update"
+  db.collection('analytics').insert(query, (err, results) => {
 
     if (err) return console.log(err);
 

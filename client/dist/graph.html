@@ -4,15 +4,37 @@
     <meta charset="UTF-8">
     <title>MY APP</title>
   </head>
-  <body> 
+  <body>
     <h1>Graphs</h1>
     <form action="/graph" method="POST">
       <div class="row">
-        <select name="type">
-          <option value="temperature">Temperature</option>
-          <option value="presion">Presion</option>
-          <option value="humidity">Humidity</option>
+        <select name="name">
+          <option value="sensor1">Sensor 1</option>
+          <option value="sensor2">Sensor 2</option>
+          <option value="sensor3">Sensor 3</option>
+          <option value="sensor4">Sensor 4</option>
+          <option value="sensor5">Sensor 5</option>
         </select>
+      </div>
+      <div class="row">
+        <select name="signal" multiple>
+          <option value="temperature">Temperature</option>
+          <option value="pressure">Pressure</option>
+          <option value="humidity">Humidity</option>
+          <option value="precipitation">Precipitation</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="from">From:</label>
+        <input type="date" name="from" id="from">
+      </div>
+      <div class="row">
+        <label for="to">To:</label>
+        <input type="date" name="to" id="to">
+      </div>
+      <div class="row">
+        <label for="range">Range:</label>
+        <input type="range" min="0" max="2" name="range">
       </div>
       <div class="row">
         <button type="submit">Submit</button>
