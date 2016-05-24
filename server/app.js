@@ -17,6 +17,22 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'client/dist', 'index.html'))
 })
 
+app.get('/graph', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'client/dist', 'graph.html'))
+})
+
+app.post('/graph', (req, res) => {
+
+  db.collection('analytics')
+    .find()
+    .toArray((err, results) => {
+
+      if (err) cosole.log(err);
+
+      console.log(results);
+    });
+})
+
 app.post('/files', upload.array('myfile'), (req, res) => {
 
   var stream = new streamBuffers.ReadableStreamBuffer({
@@ -37,7 +53,7 @@ app.post('/files', upload.array('myfile'), (req, res) => {
 
         console.log('saved to database');
   
-        res.redirect('/');
+        res.redirect('/graph');
       });
     });
 })

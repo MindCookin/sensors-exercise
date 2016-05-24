@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    title MY APP
+  body 
+    h1 Graphs
+    form(action="/graph" method="POST")
+      .row
+        select(name="type")
+          option(value="temperature") Temperature
+          option(value="presion") Presion
+          option(value="humidity") Humidity
+      .row
+        button(type="submit") Submit
+
