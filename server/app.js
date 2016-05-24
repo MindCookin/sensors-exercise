@@ -2,10 +2,10 @@
 
 const path = require('path');
 const express = require('express');
-const bodyParser = require('body-parser');
 const multer = require('multer');
-const storage = multer.memoryStorage();
+const streamBuffers = require('stream-buffers');
 
+const storage = multer.memoryStorage();
 const upload = multer({storage});
 const app = express();
 
@@ -13,8 +13,21 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'client/dist', 'index.html'))
 })
 
-app.post('/files', upload.single('myfile'), (req, res) => {
-    console.log('buffer:', req.file.buffer.toString());
+app.post('/files', upload.array('myfile'), (req, res) => {
+//  console.log('buffer:', req.files);
+
+  var stream = new streamBuffers.ReadableStreamBuffer({
+    frequency: 10,
+    chunkSize: 2048
+  });  
+
+  for (var file of req.files){
+    stream.put(file.buffer);
+  }
+
+  stream.on('data', (data) => {
+    console.log(data.toString());
+  });
 })
 
 app.listen(3000, () => {
