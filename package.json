@@ -1,0 +1,24 @@
+{
+  "name": "sensors-exercise",
+  "version": "1.0.0",
+  "description": "Read, parse and show environmental sensor data",
+  "scripts": {
+    "test": "mocha server/**/__test__*",
+    "lint": "eslint **/*.js",
+    "template": "jade client/src -Po client/dist",
+    "dev": "nodemon server/app.js",
+    "start": "node server/app.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "multer": "^1.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^2.10.2",
+    "jade": "^1.11.0",
+    "mocha": "^2.5.1",
+    "nodemon": "^1.9.2"
+  }
+}
