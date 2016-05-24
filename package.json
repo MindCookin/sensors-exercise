@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.1",
+    "csv-parser": "^1.9.3",
     "express": "^4.13.4",
     "multer": "^1.1.0",
     "stream-buffers": "^3.0.0"

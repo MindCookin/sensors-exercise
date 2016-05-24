@@ -4,6 +4,7 @@ const path = require('path');
 const express = require('express');
 const multer = require('multer');
 const streamBuffers = require('stream-buffers');
+const csv = require('csv-parser');
 
 const storage = multer.memoryStorage();
 const upload = multer({storage});
@@ -14,20 +15,21 @@ app.get('/', (req, res) => {
 })
 
 app.post('/files', upload.array('myfile'), (req, res) => {
-//  console.log('buffer:', req.files);
 
   var stream = new streamBuffers.ReadableStreamBuffer({
     frequency: 10,
     chunkSize: 2048
-  });  
+  }); 
 
   for (var file of req.files){
-    stream.put(file.buffer);
+    stream.put(file.buffer)
   }
 
-  stream.on('data', (data) => {
-    console.log(data.toString());
-  });
+  stream
+    .pipe(csv())
+    .on('data', (data) => {
+      console.log(data);
+    });
 })
 
 app.listen(3000, () => {
