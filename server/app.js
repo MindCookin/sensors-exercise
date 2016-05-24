@@ -26,8 +26,8 @@ app.post('/files', upload.array('myfile'), (req, res) => {
 
   for (var file of req.files){
     stream.put(file.buffer)
-    stream.stop();
   }
+  stream.stop();
 
   stream
     .pipe(csv())
