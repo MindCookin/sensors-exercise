@@ -27,9 +27,10 @@ app.post('/graph', (req, res) => {
     .find()
     .toArray((err, results) => {
 
-      if (err) cosole.log(err);
+      if (err) console.log(err);
 
       console.log(results);
+      res.send(results);
     });
 })
 
