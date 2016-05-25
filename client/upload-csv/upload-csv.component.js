@@ -5,6 +5,11 @@ angular.
   component('uploadCsv', {
     templateUrl: 'upload-csv/upload-csv.template.html',
     controller: function UploadCsvController() {
-      this.testing = "Pepito";
+      var self = this;
+
+      self.onSubmit = function (ev) {
+        //action="/files" method="POST" enctype="multipart/form-data"
+        debugger;
+      }
     }
   });

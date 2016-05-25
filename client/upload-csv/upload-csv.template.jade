@@ -1,9 +1,8 @@
 h1 Hello
+//-form(ng-submit="$ctrl.onSubmit()")
 form(action="/files" method="POST" enctype="multipart/form-data")
   .row
     input(type="file" name="myfile" id="onefile" multiple)
     label(for="onefile") Upload a file
   .row
     button(type="submit") Submit
-
-pre {{$ctrl.testing}}
