@@ -16,12 +16,10 @@ const app = express();
 
 var db;
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', 'client/dist', 'index.html'))
-})
+app.use(express.static('public'));
 
-app.get('/graph', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '..', 'client/dist', 'graph.html'))
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'))
 })
 
 app.post('/graph', bodyParser.urlencoded(), (req, res) => {

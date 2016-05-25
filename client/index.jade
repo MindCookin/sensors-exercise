@@ -1,0 +1,26 @@
+doctype html
+html(lang="en" ng-app="sensorsApp")
+  head
+    meta(charset="UTF-8")
+    title Environmental metrics
+
+    link(rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css")
+
+    script(src="bower_components/jquery/dist/jquery.js")
+    script(src="bower_components/angular/angular.js")
+    script(src="bower_components/angular-animate/angular-animate.js")
+    script(src="bower_components/angular-resource/angular-resource.js")
+    script(src="bower_components/angular-route/angular-route.js")
+
+    script(src="app.module.js")
+    script(src="app.config.js")
+    script(src="upload-csv/upload-csv.module.js")
+    script(src="upload-csv/upload-csv.component.js")
+    script(src="upload-csv/upload-csv.service.js")
+    script(src="dashboard/dashboard.module.js")
+    script(src="dashboard/dashboard.component.js")
+    script(src="dashboard/dashboard.service.js")
+
+  body
+    .container
+      div(ng-view class="view-frame")
