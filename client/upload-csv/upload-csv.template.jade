@@ -1,8 +1,14 @@
 h1 Hello
-//-form(ng-submit="$ctrl.onSubmit()")
-form(action="/files" method="POST" enctype="multipart/form-data")
-  .row
-    input(type="file" name="myfile" id="onefile" multiple)
-    label(for="onefile") Upload a file
-  .row
-    button(type="submit") Submit
+
+button(ngf-select="$ctrl.uploadFiles($files, $invalidFiles)" multiple
+        accept=".csv" ngf-max-height="1000" ngf-max-size="1MB") Select files
+
+ul
+  li(ng-repeat="f in $ctrl.files" style="font:smaller") {{f.name}} {{f.$errorParam}}
+    span(class="progress" ng-show="f.progress >= 0")
+      div(style="width:{{f.progress}}%"
+          ng-bind="f.progress + '%'")
+  li(ng-repeat="f in $ctrl.errFiles" style="font:smaller") {{f.name}} {{f.$error}} {{f.$errorParam}}
+
+{{$ctrl.errorMsg}}
+{{$ctrl.uploadFiles}}

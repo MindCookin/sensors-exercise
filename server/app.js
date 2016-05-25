@@ -77,6 +77,8 @@ app.post('/files', upload.array('myfile'), (req, res) => {
       });
   }
 
+  console.log(query);
+
   //TODO: Don't forget "update"
   db.collection('analytics').insert(query, (err, results) => {
 
