@@ -6,7 +6,6 @@ const api_helper = require('./helper');
 const path = require('path');
 const express = require('express');
 const multer = require('multer');
-const streamBuffers = require('stream-buffers');
 const bodyParser = require('body-parser');
 
 const storage = multer.memoryStorage();
