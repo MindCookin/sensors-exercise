@@ -1,27 +1,27 @@
 h1 Graphs
-form(action="/graph" method="POST")
+form(ng-submit="$ctrl.onSubmit()")
   .row
-    select(name="name")
+    select(name="name" ng-model="$ctrl.query.name")
       option(value="sensor1") Sensor 1
       option(value="sensor2") Sensor 2
       option(value="sensor3") Sensor 3
       option(value="sensor4") Sensor 4
       option(value="sensor5") Sensor 5
   .row
-    select(name="signal" multiple)
+    select(name="signal" multiple ng-model="$ctrl.query.signal")
       option(value="temperature") Temperature
       option(value="pressure") Pressure
       option(value="humidity") Humidity
       option(value="precipitation") Precipitation
   .row
     label(for="from") From:
-    input(type="date" name="from" id="from")
+    input(type="date" name="from" id="from" ng-model="$ctrl.query.from")
   .row
     label(for="to") To:
-    input(type="date" name="to" id="to")
+    input(type="date" name="to" id="to" ng-model="$ctrl.query.to")
   .row
     label(for="range") Range:
-    input(type="range" min="0" max="2" name="range")
+    input(type="range" min="0" max="2" name="range" ng-model="$ctrl.query.range")
   .row
     button(type="submit") Submit
 
