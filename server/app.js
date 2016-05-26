@@ -1,5 +1,7 @@
 "use strict";
 
+const DB = require('./db');
+
 const os = require('os');
 const path = require('path');
 const express = require('express');
@@ -8,13 +10,11 @@ const streamBuffers = require('stream-buffers');
 const bodyParser = require('body-parser');
 const csv = require('csv-parser');
 const split = require('split');
-const MongoClient = require('mongodb').MongoClient;
 
 const storage = multer.memoryStorage();
 const upload = multer({storage});
 const app = express();
 
-var db;
 
 app.use(express.static('public'));
 
@@ -39,15 +39,11 @@ app.post('/graph', bodyParser.urlencoded(), (req, res) => {
 
   console.log(query)
 
-  db.collection('analytics')
-    .find(query)
-    .toArray((err, results) => {
-
-      if (err) console.log(err);
-
-      console.log(results);
+  DB.get(query)
+    .then((results) => {
+      console.log('received metrics: ', results);
       res.send(results);
-    });
+    }, console.error);
 })
 
 app.post('/files', upload.array('myfile'), (req, res) => {
@@ -79,22 +75,16 @@ app.post('/files', upload.array('myfile'), (req, res) => {
 
   console.log(query);
 
-  //TODO: Don't forget "update"
-  db.collection('analytics').insert(query, (err, results) => {
-
-    if (err) return console.log(err);
-
-    console.log('saved to database');
-    res.send(results);
-  });
+  DB.insert(query)
+    .then((results) => {
+      console.log('saved to database');
+      res.send(results);
+    }, console.error);
 })
 
-
-MongoClient.connect('mongodb://localhost/sensors', (err, database) => {
-  if (err) return console.log(err);
-
-  db = database;
-  app.listen(3000, () => {
-    console.log('listening on 3000');
-  })
-})
+DB.connect()
+  .then(() => {
+    app.listen(3000, () => {
+      console.log('listening on 3000');
+    })
+  }, console.error);
