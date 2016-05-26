@@ -3,21 +3,16 @@
   "version": "1.0.0",
   "description": "Read, parse and show environmental sensor data",
   "scripts": {
-
     "test": "mocha server/**/__test__*",
     "lint": "eslint **/*.js",
     "template": "jade client/*.jade -Po public && jade client/dashboard/*.jade -Po public/dashboard && jade client/upload-csv/*.jade -Po public/upload-csv",
     "precopy": "mkdir -p public/dashboard public/upload-csv",
     "copy": "cp client/*.js public && cp -R client/dashboard/*.js public/dashboard && cp -R client/upload-csv/*.js public/upload-csv",
-
     "build:front": "npm run lint && npm run template && npm run copy",
     "build:watch": "watch 'npm run build:front' client",
-
     "dev": "nodemon server/app.js",
     "start": "node server/app.js",
-
     "postinstall": "bower install",
-
     "pretest:front": "npm install",
     "test:front": "karma start karma.conf.js",
     "test:front-single-run": "karma start karma.conf.js --single-run"
@@ -30,6 +25,7 @@
     "express": "^4.13.4",
     "mongodb": "^2.1.19",
     "multer": "^1.1.0",
+    "q": "^1.4.1",
     "split": "^1.0.0",
     "stream-buffers": "^3.0.0"
   },
