@@ -1,5 +1,7 @@
 "use strict";
 
+const config = require('./config');
+
 const os = require('os');
 
 module.exports = {
