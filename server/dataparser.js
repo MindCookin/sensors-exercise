@@ -23,7 +23,10 @@ function DataParser() {
 
         for (var key in actions) {
           f = actions[key];
-          item[key] = f(item[key]);
+
+          if (item[key]) {
+            item[key] = f(item[key]);
+          }
         }
 
         return item;
