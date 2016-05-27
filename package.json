@@ -21,14 +21,11 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.15.1",
-    "csv-parser": "^1.9.3",
     "express": "^4.13.4",
     "lodash": "^4.13.1",
     "mongodb": "^2.1.19",
     "multer": "^1.1.0",
-    "q": "^1.4.1",
-    "split": "^1.0.0",
-    "stream-buffers": "^3.0.0"
+    "q": "^1.4.1"
   },
   "devDependencies": {
     "bower": "^1.7.7",
