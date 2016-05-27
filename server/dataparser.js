@@ -102,6 +102,7 @@ function DataParser() {
 
       return transformed.map((item) => {
         delete item.timestamps;
+        item.date = new Date(item.date).getTime();
         return item;
       });
     }

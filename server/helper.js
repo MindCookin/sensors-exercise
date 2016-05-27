@@ -10,17 +10,13 @@ module.exports = {
 
     let query = {
       name: body.name,
-      timestamp: {
+      date: {
         $gt: body.from && new Date(body.from).getTime() || 0,
         $lt: body.to && new Date(body.to).getTime() || Number.MAX_SAFE_INTEGER,
       }
     };
 
-    if (body.signal) {
-      query.signal = {'$in': (typeof body.signal !== 'string' ) ? body.signal : [body.signal]};
-    }
-
-    console.log("HELPER: fetch query");
+    console.log("HELPER: fetch query", query);
 
     return query;
   },
