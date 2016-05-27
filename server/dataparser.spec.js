@@ -1,66 +1,59 @@
 var DataParser = require('./dataparser');
+var expect = require('chai').expect;
+var assert = require('chai').assert;
 
 describe('Data Structure Parser', function() {
 
 // csv original
   const mockfile1 = {
-    originalname: 'sensor1-23052016.csv',
-    buffer: new Buffer('id-senial,timestamp-lectura,valor-lectura\
-    precipitation,1464036793498,33\
-    humidity,1463982570613,94\
-    pressure,1464040427559,89\
-    precipitation,1463982162149,13\
-    precipitation,1463980261487,77\
-    temperature,1464002350575,64\
-    precipitation,1464030760407,56\
-    pressure,1463986422567,5\
+    originalname: 'sensor1-23051923.csv',
+    buffer: new Buffer('id-senial,timestamp-lectura,valor-lectura\n\
+    precipitation,1464036793498,33\n\
+    humidity,1463982570613,94\n\
+    pressure,1464040427559,89\n\
+    precipitation,1463982162149,13\n\
+    precipitation,1463980261487,77\n\
+    temperature,1464002350575,64\n\
+    precipitation,1464030760407,56\n\
+    pressure,1463986422567,5\n\
     precipitation,1464035992469,99')
   };
-/*
-1. STEP 1 (parse)
-{ sensor: @string, date: @dateString, timestamps: [@int, ...], temperature: [@int, ...], precipitation: [@int, ...], pressure: [@int, ...], humidity: [@int, ...], acquireDate: @string || @dateString}
 
-  A) Leer línea a línea:
-   * crear objeto {AUXILIAR}
-   * revisar si ya existe un objeto en la lista de métricas con el mismo {name} y {date} que {AUXILIAR}
-     * si existe, comprobar si tiene el mismo {timestamp}
-        * si tiene el mismo {timestamp} comprobar si tiene mayor {acquireDate}
-          * si tiene mayor {acquireDate} continuar
-          * si tiene menor {acquireDate} pasar a siguiente línea
-    B) Rellenar objeto con los valores de {AUXILIAR}:
-    {sensor, date, acquireDate, PUSH.Timestamps, PUSH.temperature, PUSH.humidity, PUSH.precipitation, PUSH.pressure}
+  const mockArray = [mockfile1];
+  var dataParser;
 
-2. UNA VEZ RELLENO EL ARRAY DE MÉTRICAS:
+  beforeEach(function (){
+    dataParser = new DataParser();
+  });
 
-  STEP 2 (medias)
-  { sensor: @string, date: @dateString, timestamps: [@int, ...], temperature: MEDIA, precipitation: SUM, pressure: MEDIA, humidity: MEDIA, acquireDate: @string || @dateString}
+  describe('Transform CSV string into object', function () {
 
-  STEP 3 [SALIDA] (quitar timestamps)
-  { sensor: @string, date: @dateString, temperature: MEDIA, precipitation: SUM, pressure: MEDIA, humidity: MEDIA, acquireDate: @string || @dateString}
+    var results;
 
-3. ENVIAR
-*/
-  describe('#processFile', function () {
-    it('should accept an array of files and return a single query object', function () {
+    it('should receive a file array and return a data object', function () {
+      results = dataParser.transform(mockArray);
 
-    });
-
-    it('should fill the "origin" object with parsed data', function () {
-
+      expect(results).to.be.a('Array');
+      expect(results[0]).to.be.a('object');
     });
   });
 
-  describe('#processLine', function () {
-    it('should accept a string containing a csv line and inject it into the target object', function () {
+  describe('Handle duplicates', function () {
 
+    beforeEach(function () {
+      var results = dataParser.transform(mockArray);
+    })
+
+    it('should clean {results} from duplicated entries', function () {
     });
 
-    it('should NOT update the target when sensor and timestamp are the same but the acquire date is lower', function () {
-
+    it('should merge {results} with same date into a timestamp array', function () {
     });
 
-    it('SHOULD update the target when sensor and timestamp are the same and the acquire date is higher', function () {
-
+    it('should replace {results} with same date when acquireDate is future', function () {
     });
-  });
+
+    it('should not replace {results} with same date when acquireDate is past', function () {
+    });
+  })
 });
