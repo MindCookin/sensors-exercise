@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Read, parse and show environmental sensor data",
   "scripts": {
-    "test": "mocha server/**/__test__*",
+    "test": "mocha server/**/*.spec.js",
     "lint": "eslint **/*.js",
     "template": "jade client/*.jade -Po public && jade client/dashboard/*.jade -Po public/dashboard && jade client/upload-csv/*.jade -Po public/upload-csv",
     "precopy": "mkdir -p public/dashboard public/upload-csv",
