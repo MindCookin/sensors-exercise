@@ -1,6 +1,7 @@
 "use strict";
 
 const config = require('./config');
+const DataParser = require('./dataparser');
 
 const os = require('os');
 
@@ -25,30 +26,8 @@ module.exports = {
   },
   insertQuery: (files) => {
 
-      let data, values, query = [];
-      let signal, timestamp, value;
-
-      // TODO: this should be done asynchronously with streams
-      for (let file of files){
-
-        let name = file.originalname.split('-')[0];
-        let acquisitionTime = file.originalname.split('-')[1].replace('.csv', '');
-
-        file.buffer.toString()
-          .split(os.EOL)
-          .forEach((line, index) => {
-            if (index > 0) {
-              values = line.split(',');
-              signal = values[0];
-              timestamp = parseInt(values[1]);
-              value = parseInt(values[2]);
-
-              if (signal && timestamp && value) {
-                query.push({name, signal, timestamp, value})
-              }
-            }
-          });
-      }
+      let parser = new DataParser();
+      let query = parser.transform(files);
 
       console.log("HELPER: insert query");
 

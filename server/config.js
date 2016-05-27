@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 
-exports = {
+module.exports = {
   METRICS_ACTIONS: {
     temperature: _.mean,
     pressure: _.mean,
