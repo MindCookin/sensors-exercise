@@ -4,7 +4,7 @@ const DataParser = () => {
 
   return {
 
-    origin: [],
+    source: [],
     target: [],
 
     processFile: (CSVfile) => {
