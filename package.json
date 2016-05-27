@@ -29,15 +29,17 @@
   },
   "devDependencies": {
     "bower": "^1.7.7",
+    "chai": "^3.5.0",
     "eslint": "^2.10.2",
     "jade": "^1.11.0",
-    "mocha": "^2.5.1",
-    "nodemon": "^1.9.2",
-    "watch": "^0.18.0",
     "jasmine-core": "^2.4.1",
     "karma": "^0.13.22",
     "karma-chrome-launcher": "^0.2.3",
     "karma-firefox-launcher": "^0.1.7",
-    "karma-jasmine": "^0.3.8"
+    "karma-jasmine": "^0.3.8",
+    "mocha": "^2.5.1",
+    "nodemon": "^1.9.2",
+    "sinon": "^1.17.4",
+    "watch": "^0.18.0"
   }
 }
