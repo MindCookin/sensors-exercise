@@ -28,11 +28,11 @@ form.container-flex(ng-submit="$ctrl.onSubmit()")
 
 hr.row
 
-div
+div(ng-show="$ctrl.labels")
   label(for="range") Range: {{$ctrl.ranges[$ctrl.query.range]}}
-  input(type="range" min="0" max="2" name="range" ng-model="$ctrl.query.range")
+  input(type="range" min="0" max="2" name="range" ng-model="$ctrl.query.range" ng-change="$ctrl.onChangeRange()")
 
-hr.row
+hr.row(ng-show="$ctrl.labels")
 
 canvas(ng-if="$ctrl.labels" id="line" class="chart chart-line" chart-data="$ctrl.data"
   chart-labels="$ctrl.labels" chart-legend="true" chart-series="$ctrl.series"
