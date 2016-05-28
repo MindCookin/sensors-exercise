@@ -5,21 +5,55 @@ angular.
   component('dashboard', {
     templateUrl: 'dashboard/dashboard.template.html',
     controller: ['DashboardService', function DashboardController(DashboardService) {
-      this.query = {};
-      this.labels = ["January", "February", "March", "April", "May", "June", "July"];
-      this.series = ['Series A', 'Series B'];
-      this.data = [
-        [65, 59, 80, 81, 56, 55, 40],
-        [28, 48, 40, 19, 86, 27, 90]
-      ];
-      this.onClick = function(points, evt) {
+
+      var self = this;
+
+      self.query = {
+        range: 0
+      };
+      self.ranges['Day', 'Week', 'Month'];
+
+      self.onClick = function(points, evt) {
         console.log(points, evt);
       };
 
-      this.onSubmit = function() {
-        DashboardService.getData(this.query)
+      self.onSubmit = function() {
+
+        if (!self.query.signal) {
+          alert('Please specify at least one signal');
+          return;
+        }
+
+        DashboardService.getData(self.query)
           .then(function (data) {
-            console.log("data >>>> ", data);
+
+            // data.name
+            // data.acquireDate
+            // data.humidity
+            // data.precipitation
+            // data.pressure
+            // data.date
+
+            self.labels = _.map(data, function (item) {
+              return new Date(item.date).toDateString();
+            });
+
+            self.series = self.query.signal;
+            self.data = [];
+
+            for (var i = 0, x = self.series.length; i < x; i++) {
+
+              var serie = [];
+              var serieName = self.series[i];
+
+              for (var j = 0, y = data.length; j < y; j++) {
+                serie.push(data[j][serieName])
+              }
+
+              self.data.push(serie);
+            }
+
+            console.log(self.data);
           })
       };
     }]

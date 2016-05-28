@@ -11,8 +11,8 @@ module.exports = {
     let query = {
       name: body.name,
       date: {
-        $gt: body.from && new Date(body.from).getTime() || 0,
-        $lt: body.to && new Date(body.to).getTime() || Number.MAX_SAFE_INTEGER,
+        $gte: body.from && new Date(body.from).getTime() || 0,
+        $lte: body.to && new Date(body.to).getTime() || Number.MAX_SAFE_INTEGER,
       }
     };
 
