@@ -11,7 +11,7 @@ angular.
       self.query = {
         range: 0
       };
-      self.ranges['Day', 'Week', 'Month'];
+      self.ranges = ['Daily', 'Weekly', 'Monthly'];
 
       self.onClick = function(points, evt) {
         console.log(points, evt);

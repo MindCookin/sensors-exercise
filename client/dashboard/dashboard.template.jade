@@ -29,7 +29,7 @@ form.container-flex(ng-submit="$ctrl.onSubmit()")
 hr.row
 
 div
-  label(for="range") Range: {{$ctrl.query.range}}
+  label(for="range") Range: {{$ctrl.ranges[$ctrl.query.range]}}
   input(type="range" min="0" max="2" name="range" ng-model="$ctrl.query.range")
 
 hr.row
