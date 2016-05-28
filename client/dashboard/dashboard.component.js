@@ -146,7 +146,7 @@ angular.
           var serieName = self.series[i];
 
           for (var j = 0, y = data.length; j < y; j++) {
-            serie.push(data[j][serieName])
+            serie.push(parseInt(data[j][serieName], 10))
           }
 
           self.data.push(serie);
