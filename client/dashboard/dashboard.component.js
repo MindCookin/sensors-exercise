@@ -6,39 +6,86 @@ angular.
     templateUrl: 'dashboard/dashboard.template.html',
     controller: ['DashboardService', function DashboardController(DashboardService) {
 
+
       var self = this;
-      var lastQueryData;
+      var lastQueryData, filteredData;
       var rangeActions = [toDaily, toWeekly, toMonthly];
 
-      self.query = {
-        range: 0
+      self.SIGNALS = ['temperature', 'pressure', 'humidity', 'precipitation'];
+      self.checkModel = {
+        left: false,
+        middle: true,
+        right: false
+      };
+
+      self.query = {};
+      self.filters = {
+        range: 0,
+        signal : self.SIGNALS
       };
       self.ranges = ['Daily', 'Weekly', 'Monthly'];
 
-      self.onClick = function(points, evt) {
-        console.log(points, evt);
+      self.selectSensor = function (ev, sensor) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        self.displayDropdown = !self.displayDropdown;
+        self.query.name = sensor;
+      };
+
+      self.updateSignal = function (signal) {
+
+        var signalIndex = self.filters.signal.indexOf(signal);
+        if (signalIndex < 0) {
+          self.filters.signal.push(signal)
+        } else {
+          if (self.filters.signal.length === 1) {
+            return;
+          }
+
+          self.filters.signal.splice(signalIndex, 1);
+        }
+
+        rangeActions[self.filters.range]();
       };
 
       self.onSubmit = function() {
 
-        if (!self.query.signal) {
-          alert('Please specify at least one signal');
-          return;
-        }
-
         DashboardService.getData(self.query)
           .then(function (data) {
+
+            if (!data || data.length === 0) {
+              alert('No data found for this search. Please try again.')
+            }
+
+            var union = [];
+
             lastQueryData = data;
-            update(data);
+
+            _.forEach(lastQueryData, function (v) {
+              union = _.union(union, _.keys(v));
+            })
+
+            self.filters.signal = _.intersection(self.SIGNALS, union);
+            self.providedSignals = _.intersection(self.SIGNALS, union);
+
+            self.onChangeRange();
           })
       };
 
-      self.onChangeRange = function () {
-        rangeActions[self.query.range]();
+      self.onChangeRange = function (index) {
+
+        if (index >= 0) {
+          self.filters.range = index;
+        }
+
+        rangeActions[self.filters.range]();
       }
 
       function toDaily() {
-        update(lastQueryData);
+
+        filteredData = lastQueryData;
+
+        update();
       }
 
       function toWeekly() {
@@ -79,9 +126,9 @@ angular.
           return response;
         })
 
-        weeks = _.map(weeks, mergeMetrics);
+        filteredData = _.map(weeks, mergeMetrics);
 
-        update(weeks, 'week');
+        update();
       }
 
       function toMonthly() {
@@ -117,27 +164,30 @@ angular.
           return response;
         })
 
-        months = _.map(months, mergeMetrics)
+        filteredData = _.map(months, mergeMetrics)
 
-        update(months, 'month');
+        update();
       }
 
-      function update(data, type) {
+      function update() {
+
+        var data = filteredData;
+
         self.labels = _.map(data, function (item) {
           var dateString = new Date(item.date).toDateString();
 
-          if (type === 'week') {
+          if (self.filters.range === 1) { // weekly
             var next = new Date(item.date);
             next.setDate(item.date.getDate() + 6);
             dateString = 'Week from ' + dateString + ' to ' + next.toDateString();
-          } else if (type === 'month') {
+          } else if (self.filters.range === 2) { // monthly
             dateString = dateString.split(' ')[1] + ' ' + dateString.split(' ')[3]
           }
 
           return dateString;
         });
 
-        self.series = self.query.signal;
+        self.series = self.filters.signal;
         self.data = [];
 
         for (var i = 0, x = self.series.length; i < x; i++) {
@@ -146,7 +196,7 @@ angular.
           var serieName = self.series[i];
 
           for (var j = 0, y = data.length; j < y; j++) {
-            serie.push(parseInt(data[j][serieName], 10))
+            serie.push(parseInt(data[j][serieName], 10) || 0)
           }
 
           self.data.push(serie);

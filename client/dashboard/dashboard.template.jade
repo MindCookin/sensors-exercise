@@ -1,38 +1,54 @@
-h1 Graphs
-hr.row
-form.container-flex(ng-submit="$ctrl.onSubmit()")
-  .row
-    .col-xs-6
-      select(name="name" ng-model="$ctrl.query.name")
-        option(value="sensor1") Sensor 1
-        option(value="sensor2") Sensor 2
-        option(value="sensor3") Sensor 3
-        option(value="sensor4") Sensor 4
-        option(value="sensor5") Sensor 5
-    .col-xs-6
-      label(for="from") From:
-      input(type="date" name="from" id="from" ng-model="$ctrl.query.from")
-  .row
-    .col-xs-6
-      select(name="signal" multiple ng-model="$ctrl.query.signal")
-        option(value="temperature") Temperature
-        option(value="pressure") Pressure
-        option(value="humidity") Humidity
-        option(value="precipitation") Precipitation
-    .col-xs-6
-      label(for="to") To:
-      input(type="date" name="to" id="to" ng-model="$ctrl.query.to")
-  .row
+h1 Signal metrics dashboard
+form.form-horizontal(ng-submit="$ctrl.onSubmit()")
+  legend Search:
+  .form-group
     .col-xs-12
-      button.button(type="submit") Submit
-
-hr.row
+      .btn-group.btn-group-justified(role="group")
+        .btn-group
+          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor1'" ng-class="{active: $ctrl.query.name === 'sensor1'}") Sensor 1
+        .btn-group
+          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor2'" ng-class="{active: $ctrl.query.name === 'sensor2'}") Sensor 2
+        .btn-group
+          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor3'" ng-class="{active: $ctrl.query.name === 'sensor3'}") Sensor 3
+        .btn-group
+          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor4'" ng-class="{active: $ctrl.query.name === 'sensor4'}") Sensor 4
+        .btn-group
+          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor5'" ng-class="{active: $ctrl.query.name === 'sensor5'}") Sensor 5
+  .form-group
+    .col-sm-6
+      label.control-label.col-xs-2(for="from") From:
+      .col-xs-10
+        input.form-control(type="date" name="from" id="from" ng-model="$ctrl.query.from")
+    .col-sm-6
+      label.col-xs-2(for="to") To:
+      .col-xs-10
+        input.form-control(type="date" name="to" id="to" ng-model="$ctrl.query.to")
+  .form-group
+    .col-xs-12
+      button.btn.btn-primary.btn-lg.btn-block(type="submit" ng-disabled="!$ctrl.query.name") Submit
 
 div(ng-show="$ctrl.labels")
-  label(for="range") Range: {{$ctrl.ranges[$ctrl.query.range]}}
-  input(type="range" min="0" max="2" name="range" ng-model="$ctrl.query.range" ng-change="$ctrl.onChangeRange()")
-
-hr.row(ng-show="$ctrl.labels")
+  form.form-horizontal(ng-submit="$ctrl.onSubmit()")
+    legend Filters:
+    .form-group
+      .col-xs-12.col-md-6
+        .btn-group.btn-group-justified(role="group")
+          .btn-group
+            button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('temperature') < 0" ng-click="$ctrl.updateSignal('temperature')" ng-class="{active: $ctrl.filters.signal.indexOf('temperature') >= 0}") Temperature
+          .btn-group
+            button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('pressure') < 0" ng-click="$ctrl.updateSignal('pressure')" ng-class="{active: $ctrl.filters.signal.indexOf('pressure') >= 0}") Pressure
+          .btn-group
+            button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('humidity') < 0" ng-click="$ctrl.updateSignal('humidity')" ng-class="{active: $ctrl.filters.signal.indexOf('humidity') >= 0}") Humidity
+          .btn-group
+            button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('precipitation') < 0" ng-click="$ctrl.updateSignal('precipitation')" ng-class="{active: $ctrl.filters.signal.indexOf('precipitation') >= 0}") Precipitation
+      .col-xs-12.col-md-6
+        .btn-group.btn-group-justified(role="group")
+          .btn-group
+            button.btn.btn-default(type="button" ng-click="$ctrl.onChangeRange(0)" ng-class="{active: !$ctrl.filters.range}") {{$ctrl.ranges[0]}}
+          .btn-group
+            button.btn.btn-default(type="button" ng-click="$ctrl.onChangeRange(1)" ng-class="{active: $ctrl.filters.range === 1}") {{$ctrl.ranges[1]}}
+          .btn-group
+            button.btn.btn-default(type="button" ng-click="$ctrl.onChangeRange(2)" ng-class="{active: $ctrl.filters.range === 2}") {{$ctrl.ranges[2]}}
 
 canvas(ng-if="$ctrl.labels" id="line" class="chart chart-line" chart-data="$ctrl.data"
   chart-labels="$ctrl.labels" chart-legend="true" chart-series="$ctrl.series"
