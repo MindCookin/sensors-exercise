@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('sensorsApp', [
+  'ui',
   'ngFileUpload',
   'ngRoute',
-  'uploadCsv',
   'chart.js',
+  'uploadCsv',
   'dashboard'
 ]);

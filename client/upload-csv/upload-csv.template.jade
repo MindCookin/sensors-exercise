@@ -1,7 +1,9 @@
 h1 Hello
 
-button(ngf-select="$ctrl.uploadFiles($files, $invalidFiles)" multiple
+button(ngf-select="$ctrl.uploadFiles($files)" multiple
         accept=".csv" ngf-max-height="1000" ngf-max-size="1MB") Select files
+span.progress(ng-show="$ctrl.progress >= 0")
+  div(style="width:{{ctrl.progress}}%" ng-bind="ctrl.progress + '%'")
 
 ul
   li(ng-repeat="f in $ctrl.files" style="font:smaller") {{f.name}} {{f.$errorParam}}
@@ -10,5 +12,5 @@ ul
           ng-bind="f.progress + '%'")
   li(ng-repeat="f in $ctrl.errFiles" style="font:smaller") {{f.name}} {{f.$error}} {{f.$errorParam}}
 
-{{$ctrl.errorMsg}}
-{{$ctrl.uploadFiles}}
+p {{$ctrl.errorMsg}}
+p {{$ctrl.uploadFiles}}
