@@ -19,7 +19,7 @@ form.form-horizontal(ng-submit="$ctrl.onSubmit()")
       label.control-label.col-xs-2(for="from") From:
       .col-xs-10
         input.form-control(type="date" name="from" id="from" ng-model="$ctrl.query.from")
-    .col-sm-6
+    .col-sm-6.marginTop10on750
       label.col-xs-2(for="to") To:
       .col-xs-10
         input.form-control(type="date" name="to" id="to" ng-model="$ctrl.query.to")
@@ -41,7 +41,7 @@ div(ng-show="$ctrl.labels")
             button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('humidity') < 0" ng-click="$ctrl.updateSignal('humidity')" ng-class="{active: $ctrl.filters.signal.indexOf('humidity') >= 0}") Humidity
           .btn-group
             button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('precipitation') < 0" ng-click="$ctrl.updateSignal('precipitation')" ng-class="{active: $ctrl.filters.signal.indexOf('precipitation') >= 0}") Precipitation
-      .col-xs-12.col-md-6
+      .col-xs-12.col-md-6.marginTop10on992
         .btn-group.btn-group-justified(role="group")
           .btn-group
             button.btn.btn-default(type="button" ng-click="$ctrl.onChangeRange(0)" ng-class="{active: !$ctrl.filters.range}") {{$ctrl.ranges[0]}}
