@@ -23,34 +23,12 @@ angular.
 
       self.uploadFiles = function uploadFiles(files) {
 
-        // self.files = files;
-        //
-        // if (files && files.length) {
-        //     Upload.upload({
-        //         url: '/files',
-        //         data: {
-        //             files: files
-        //         }
-        //     }).then(function (response) {
-        //         $timeout(function () {
-        //             file.result = response.data;
-        //         });
-        //     }, function (response) {
-        //         if (response.status > 0) {
-        //             self.errorMsg = response.status + ': ' + response.data;
-        //         }
-        //     }, function (evt) {
-        //         self.progress =
-        //             Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-        //     });
-        // }
-
         self.files = files;
         self.sendFinished = false;
 
         angular.forEach(files, function(file) {
             file.upload = Upload.upload({
-                url: '/files',
+                url: '/upload/files',
                 data: {myfile: file}
             });
 

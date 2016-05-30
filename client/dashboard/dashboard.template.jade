@@ -1,19 +1,12 @@
 h1 Signal metrics dashboard
-form.form-horizontal(ng-submit="$ctrl.onSubmit()")
+p(ng-if="!$ctrl.sensors") Retrieving sensors...
+form.form-horizontal(ng-submit="$ctrl.onSubmit()" ng-if="$ctrl.sensors")
   legend Search:
   .form-group
     .col-xs-12
       .btn-group.btn-group-justified(role="group")
-        .btn-group
-          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor1'" ng-class="{active: $ctrl.query.name === 'sensor1'}") Sensor 1
-        .btn-group
-          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor2'" ng-class="{active: $ctrl.query.name === 'sensor2'}") Sensor 2
-        .btn-group
-          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor3'" ng-class="{active: $ctrl.query.name === 'sensor3'}") Sensor 3
-        .btn-group
-          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor4'" ng-class="{active: $ctrl.query.name === 'sensor4'}") Sensor 4
-        .btn-group
-          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = 'sensor5'" ng-class="{active: $ctrl.query.name === 'sensor5'}") Sensor 5
+        .btn-group(ng-repeat="sensorName in $ctrl.sensors")
+          button.btn.btn-default(type="button" ng-click="$ctrl.query.name = sensorName" ng-class="{active: $ctrl.query.name === sensorName}") {{sensorName}}
   .form-group
     .col-sm-6
       label.control-label.col-xs-2(for="from") From:

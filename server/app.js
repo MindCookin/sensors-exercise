@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'))
 })
 
-app.post('/graph', bodyParser.urlencoded(), (req, res) => {
+app.post('/dashboard', bodyParser.urlencoded(), (req, res) => {
 
   DB.get( api_helper.fetchQuery(req.body) )
     .then((results) => {
@@ -27,13 +27,22 @@ app.post('/graph', bodyParser.urlencoded(), (req, res) => {
     }, console.error);
 })
 
-app.post('/files', upload.array('myfile'), (req, res) => {
+app.post('/upload/files', upload.array('myfile'), (req, res) => {
 
   DB.insert(api_helper.insertQuery(req.files))
     .then((results) => {
       console.log('saved to database');
       res.send(results);
     }, console.error);
+})
+
+app.get('/dashboard/names', (req, res) => {
+
+    DB.getNames()
+      .then((results) => {
+        console.log('received names: ', results);
+        res.send(results);
+      }, console.error);
 })
 
 DB.connect()

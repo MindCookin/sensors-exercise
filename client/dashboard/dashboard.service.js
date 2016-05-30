@@ -8,8 +8,18 @@ angular.
         getData: function(query) {
           return $http({
               method  : 'POST',
-              url     : '/graph',
+              url     : '/dashboard',
               data    : $.param(query),
+              headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            .then(function (response) {
+              return response.data;
+            });
+        },
+        getNames: function(query) {
+          return $http({
+              method  : 'GET',
+              url     : '/dashboard/names',
               headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
             .then(function (response) {

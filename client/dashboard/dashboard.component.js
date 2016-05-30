@@ -6,6 +6,10 @@ angular.
     templateUrl: 'dashboard/dashboard.template.html',
     controller: ['DashboardService', function DashboardController(DashboardService) {
 
+      DashboardService.getNames()
+        .then(function (data) {
+          self.sensors = data;
+        })
 
       var self = this;
       var lastQueryData, filteredData;
