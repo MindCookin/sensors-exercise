@@ -1,4 +1,5 @@
 node_modules/*
 public/*
+csv/*
 *.swp
 npm-debug.log
