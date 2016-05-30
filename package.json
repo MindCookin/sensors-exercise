@@ -13,7 +13,7 @@
     "dev": "nodemon server/app.js",
     "start": "node server/app.js",
     "postinstall": "bower install",
-    "generate": "node random-year-csvs.js"
+    "generate": "mkdir -p csv && node random-year-csvs.js"
   },
   "private": true,
   "license": "ISC",
