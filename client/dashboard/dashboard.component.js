@@ -223,7 +223,7 @@ angular.
       }
 
       function mergeMetrics(item) {
-        item.precipitation = _.sum(item.precipitation);
+        item.precipitation = _.mean(item.precipitation);
         item.temperature = _.mean(item.temperature);
         item.pressure = _.mean(item.pressure);
         item.humidity = _.mean(item.humidity);
