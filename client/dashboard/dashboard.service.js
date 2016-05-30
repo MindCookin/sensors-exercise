@@ -7,9 +7,8 @@ angular.
       return {
         getData: function(query) {
           return $http({
-              method  : 'POST',
-              url     : '/dashboard',
-              data    : $.param(query),
+              method  : 'GET',
+              url     : '/dashboard/' + query.name + '/' + query.from + '/' + query.to,
               headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
             .then(function (response) {

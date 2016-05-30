@@ -18,9 +18,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'))
 })
 
-app.post('/dashboard', bodyParser.urlencoded(), (req, res) => {
+app.get('/dashboard/:name/:from/:to', (req, res) => {
 
-  DB.get( api_helper.fetchQuery(req.body) )
+  DB.get( api_helper.fetchQuery({
+    name: req.params.name,
+    from: req.params.from,
+    to:   req.params.to
+  }) )
     .then((results) => {
       console.log('received metrics: ', results);
       res.send(results);
