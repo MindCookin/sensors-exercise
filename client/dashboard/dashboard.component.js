@@ -55,6 +55,7 @@ angular.
 
             if (!data || data.length === 0) {
               alert('No data found for this search. Please try again.')
+              return;
             }
 
             var union = [];
