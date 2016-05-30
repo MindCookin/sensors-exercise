@@ -13,9 +13,7 @@
     "dev": "nodemon server/app.js",
     "start": "node server/app.js",
     "postinstall": "bower install",
-    "pretest:front": "npm install",
-    "test:front": "karma start karma.conf.js",
-    "test:front-single-run": "karma start karma.conf.js --single-run"
+    "generate": "node random-year-csvs.js"
   },
   "private": true,
   "license": "ISC",

@@ -40,7 +40,7 @@ for (var i = 0, max = 365; i < max; i++) {
 
     fs.writeFile('csv/' + fileName, rowsString, function(err) {
       if (err) return console.log(err);
-      console.log(fileName + 'was saved!');
+      console.log('csv generated!');
     });
   }
 
