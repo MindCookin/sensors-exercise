@@ -46,7 +46,7 @@ module.exports = {
         (err, results) => {
 
       if (err) deffered.reject(err);
-      console.log('saved to database');
+      console.log('updated database');
       deffered.resolve(results);
     })
 
