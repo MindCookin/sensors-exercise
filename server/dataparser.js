@@ -42,6 +42,7 @@ function DataParser() {
         let name = file.originalname.split('-')[0];
         let acquireDate = file.originalname.split('-')[1].replace('.csv', '');
         acquireDate = acquisitionDateStringToDateString(acquireDate);
+        acquireDate = new Date(acquireDate).getTime()
 
         file.buffer.toString()
           .split(os.EOL)

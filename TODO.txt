@@ -1,5 +1,4 @@
 front
 * poner bonito (/upload) y gestionar respuesta de API
 
-back
-* hacer upload condicional para multiples archivos
+docu

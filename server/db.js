@@ -36,13 +36,19 @@ module.exports = {
   insert: (query) => {
 
     let deffered = Q.defer();
-    //TODO: Don't forget "update"
-    db.collection('analytics').insert(query, (err, results) => {
-      if (err) deffered.reject(err);
 
+    query = query[0]; // finally we are sending one file at a time, so no need for array
+
+    db.collection('analytics').update(
+        {name:query.name, date: query.date, acquireDate: {$lte: query.acquireDate}},
+        {$set: query},
+        {upsert: true, multi: true},
+        (err, results) => {
+
+      if (err) deffered.reject(err);
       console.log('saved to database');
       deffered.resolve(results);
-    });
+    })
 
     return deffered.promise;
   },
