@@ -5,8 +5,13 @@
   .drop-box(ngf-drop="$ctrl.uploadFiles($files)" ngf-select="$ctrl.uploadFiles($files)" ngf-multiple="true" accept=".csv" ngf-dragover-class="$ctrl.dragoverObj" ngf-drop-available="true") Select or drop files
   span.progress(ng-show="$ctrl.progress >= 0")
     div(style="width:{{$ctrl.progress}}%" ng-bind="$ctrl.progress + '%'")
-
-  .progress-file-container(ng-repeat="f in $ctrl.files" style="font:smaller")
+  
+  .success-alert(ng-show="$ctrl.response")
+    .alert.alert-success(role="alert") {{$ctrl.response.inserted}} have been inserted and {{$ctrl.response.updated}} have been updated of {{$ctrl.files.length}} files. 
+      br
+      a.alert-link(href="#!/dashboard") Go to dashboard and check it out.
+        
+  .progress-file-container(ng-repeat="f in $ctrl.files" style="font:smaller" ng-class="{fadeOut: f.progress === 100}")
     .col-xs-4.col-sm-2.file-name {{f.name}}
     .col-xs-8.col-sm-10
       .progress
@@ -16,8 +21,5 @@
   .error-alerts(ng-repeat="f in $ctrl.errFiles") 
     .alert.alert-danger(role="alert") {{f.name}} {{f.$error}} {{f.$errorParam}}
   
-  .success-alert(ng-show="self.sendFinished")
-    .alert.alert-success(role="alert") Congratulations, you've upload {{$ctrl.files.length}} files. 
-      a.alert-link(href="#!/dashboard") Go to dashboard and check it out.
 
   pre(ng-show="$ctrl.errorMsg") {{$ctrl.errorMsg | json}}

@@ -24,7 +24,7 @@ angular.
       self.uploadFiles = function uploadFiles(files) {
 
         self.files = files;
-        self.sendFinished = false;
+        self.response = {updated: 0, inserted: 0};
 
         angular.forEach(files, function(file) {
             file.upload = Upload.upload({
@@ -35,13 +35,17 @@ angular.
             file.upload.then(function (response) {
                 $timeout(function () {
                     file.result = response.data;
+
+                    if (file.result.upserted) {
+                      self.response.upserted += 1;
+                    } else if (file.result.nModified) {
+                      self.response.inserted += 1;
+                    }
                 });
             }, function (response) {
                 if (response.status > 0)
                   self.errorMsg = response.status + ': ' + response.data;
-                else {
-                  self.sendFinished = true;
-                }
+
             }, function (evt) {
                 file.progress = Math.min(100, parseInt(100.0 *
                                          evt.loaded / evt.total));
