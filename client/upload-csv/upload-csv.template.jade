@@ -9,7 +9,7 @@
   .success-alert(ng-show="$ctrl.response")
     .alert.alert-success(role="alert") {{$ctrl.response.inserted}} have been inserted and {{$ctrl.response.updated}} have been updated of {{$ctrl.files.length}} files. 
       br
-      a.alert-link(href="#!/dashboard") Go to dashboard and check it out.
+      a.alert-link(href="#!/dashboard") Go to dashboard to check it.
         
   .progress-file-container(ng-repeat="f in $ctrl.files" style="font:smaller" ng-class="{fadeOut: f.progress === 100}")
     .col-xs-4.col-sm-2.file-name {{f.name}}

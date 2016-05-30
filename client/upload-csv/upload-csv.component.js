@@ -37,9 +37,9 @@ angular.
                     file.result = response.data;
 
                     if (file.result.upserted) {
-                      self.response.upserted += 1;
-                    } else if (file.result.nModified) {
                       self.response.inserted += 1;
+                    } else if (file.result.nModified) {
+                      self.response.updated += 1;
                     }
                 });
             }, function (response) {
