@@ -35,7 +35,6 @@ app.post('/upload/files', upload.array('myfile'), (req, res) => {
 
   DB.insert(api_helper.insertQuery(req.files))
     .then((results) => {
-      console.log('saved to database');
       res.send(results);
     }, console.error);
 })

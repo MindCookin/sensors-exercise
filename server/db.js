@@ -6,6 +6,30 @@ const MongoClient = require('mongodb').MongoClient;
 
 var db;
 
+function updateOrInsert(queries, index, cb) {
+
+  let query = queries[index];
+
+  db.collection('analytics').update(
+    {name: query.name, date: query.date, acquireDate: {$lte: query.acquireDate}},
+    {$set: query},
+    {upsert: true, multi: true},
+    (err, results) => {
+
+      index += 1;
+
+      if (index === queries.length) {
+        if (err) {
+          cb(err);
+        } else {
+          cb(null, results);
+        }
+      } else {
+        updateOrInsert(queries, index, cb);
+      }
+  })
+}
+
 module.exports = {
   connect: () => {
 
@@ -33,21 +57,18 @@ module.exports = {
 
     return deffered.promise;
   },
-  insert: (query) => {
+  insert: (queries) => {
 
     let deffered = Q.defer();
 
-    query = query[0]; // finally we are sending one file at a time, so no need for array
+    updateOrInsert(queries, 0, function (err, results) {
 
-    db.collection('analytics').update(
-        {name:query.name, date: query.date, acquireDate: {$lte: query.acquireDate}},
-        {$set: query},
-        {upsert: true, multi: true},
-        (err, results) => {
-
-      if (err) deffered.reject(err);
-      console.log('updated database');
-      deffered.resolve(results);
+      if (err) {
+        deffered.reject(err);
+      } else {
+        console.log('updated database');
+        deffered.resolve(results);
+      }
     })
 
     return deffered.promise;
