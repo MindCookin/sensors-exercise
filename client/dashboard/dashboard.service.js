@@ -8,7 +8,7 @@ angular.
         getData: function(query) {
           return $http({
               method  : 'GET',
-              url     : '/dashboard/' + query.name + '/' + query.from + '/' + query.to,
+              url     : '/api/dashboard/' + query.name + '/' + query.from + '/' + query.to,
               headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
             .then(function (response) {
@@ -18,7 +18,7 @@ angular.
         getNames: function(query) {
           return $http({
               method  : 'GET',
-              url     : '/dashboard/names',
+              url     : '/api/dashboard/names',
               headers : { 'Content-Type': 'application/x-www-form-urlencoded' }
             })
             .then(function (response) {

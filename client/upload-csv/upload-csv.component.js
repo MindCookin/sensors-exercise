@@ -28,7 +28,7 @@ angular.
 
         angular.forEach(files, function(file) {
             file.upload = Upload.upload({
-                url: '/upload/files',
+                url: '/api/upload/files',
                 data: {myfile: file}
             });
 

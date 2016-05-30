@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname, '..', 'public', 'index.html'))
 })
 
-app.get('/dashboard/:name/:from/:to', (req, res) => {
+app.get('/api/dashboard/:name/:from/:to', (req, res) => {
 
   DB.get( api_helper.fetchQuery({
     name: req.params.name,
@@ -31,7 +31,7 @@ app.get('/dashboard/:name/:from/:to', (req, res) => {
     }, console.error);
 })
 
-app.post('/upload/files', upload.array('myfile'), (req, res) => {
+app.post('/api/upload/files', upload.array('myfile'), (req, res) => {
 
   DB.insert(api_helper.insertQuery(req.files))
     .then((results) => {
@@ -39,7 +39,7 @@ app.post('/upload/files', upload.array('myfile'), (req, res) => {
     }, console.error);
 })
 
-app.get('/dashboard/names', (req, res) => {
+app.get('/api/dashboard/names', (req, res) => {
 
     DB.getNames()
       .then((results) => {
