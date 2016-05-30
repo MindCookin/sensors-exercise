@@ -50,16 +50,23 @@ module.exports = {
     let deffered = Q.defer();
 
     db.collection('analytics')
-      .find({}, {name: 1, _id:0})
+      .find({}, {_id:0, acquireDate: 0, date: 0, })
       .toArray((err, results) => {
         if (err) deffered.reject(err);
 
         var response = _.reduce(results, function(result, value, key){
-         if (value.name && result.indexOf(value.name) < 0) {
-           result.push(value.name)
+         if (value.name && result.names.indexOf(value.name) < 0) {
+           result.names.push(value.name)
          }
+
+         _.forEach(_.keys(value), function (k) {
+           if (k !== 'name' && result.metrics.indexOf(k) < 0) {
+             result.metrics.push(k);
+           }
+         });
+
          return result;
-        }, [])
+       }, {names: [], metrics: []})
 
         console.log('got names from database');
       deffered.resolve(response);

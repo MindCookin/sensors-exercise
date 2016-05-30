@@ -2,6 +2,4 @@ front
 * poner bonito (/upload) y gestionar respuesta de API
 
 back
-* renombrar puntos de API al mismo
 * hacer upload condicional para multiples archivos
-* Rellenar los campos “sensor”, “signal” desde servidor

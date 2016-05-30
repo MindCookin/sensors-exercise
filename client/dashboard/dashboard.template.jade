@@ -26,14 +26,8 @@ div(ng-show="$ctrl.labels")
     .form-group
       .col-xs-12.col-md-6
         .btn-group.btn-group-justified(role="group")
-          .btn-group
-            button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('temperature') < 0" ng-click="$ctrl.updateSignal('temperature')" ng-class="{active: $ctrl.filters.signal.indexOf('temperature') >= 0}") Temperature
-          .btn-group
-            button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('pressure') < 0" ng-click="$ctrl.updateSignal('pressure')" ng-class="{active: $ctrl.filters.signal.indexOf('pressure') >= 0}") Pressure
-          .btn-group
-            button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('humidity') < 0" ng-click="$ctrl.updateSignal('humidity')" ng-class="{active: $ctrl.filters.signal.indexOf('humidity') >= 0}") Humidity
-          .btn-group
-            button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf('precipitation') < 0" ng-click="$ctrl.updateSignal('precipitation')" ng-class="{active: $ctrl.filters.signal.indexOf('precipitation') >= 0}") Precipitation
+          .btn-group(ng-repeat="signal in $ctrl.signals")
+            button.btn.btn-default(type="button" ng-disabled="$ctrl.providedSignals.indexOf(signal) < 0" ng-click="$ctrl.updateSignal(signal)" ng-class="{active: $ctrl.filters.signal.indexOf(signal) >= 0}") {{signal}}
       .col-xs-12.col-md-6.marginTop10on992
         .btn-group.btn-group-justified(role="group")
           .btn-group

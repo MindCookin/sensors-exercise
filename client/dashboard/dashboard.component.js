@@ -8,14 +8,14 @@ angular.
 
       DashboardService.getNames()
         .then(function (data) {
-          self.sensors = data;
+          self.sensors = data.names;
+          self.signals = data.metrics;
         })
 
       var self = this;
       var lastQueryData, filteredData;
       var rangeActions = [toDaily, toWeekly, toMonthly];
 
-      self.SIGNALS = ['temperature', 'pressure', 'humidity', 'precipitation'];
       self.checkModel = {
         left: false,
         middle: true,
@@ -25,7 +25,7 @@ angular.
       self.query = {};
       self.filters = {
         range: 0,
-        signal : self.SIGNALS
+        signal : self.signals
       };
       self.ranges = ['Daily', 'Weekly', 'Monthly'];
 
@@ -70,8 +70,8 @@ angular.
               union = _.union(union, _.keys(v));
             })
 
-            self.filters.signal = _.intersection(self.SIGNALS, union);
-            self.providedSignals = _.intersection(self.SIGNALS, union);
+            self.filters.signal = _.intersection(self.signals, union);
+            self.providedSignals = _.intersection(self.signals, union);
 
             self.onChangeRange();
           })
