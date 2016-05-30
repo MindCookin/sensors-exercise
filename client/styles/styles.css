@@ -1,3 +1,36 @@
+.drop-box {
+  background: #F8F8F8;
+  border: 5px dashed #DDD;
+  width: 170px;
+  text-align: center;
+  padding: 100px 10px;
+  margin: 20px auto;
+  font-size: 20px;
+}
+
+.drop-box.dragover {
+  border: 5px dashed blue;
+}
+
+.drop-box.dragover-err {
+  border: 5px dashed red;
+}
+
+.centered {
+  margin: 0 auto;
+  width: 750px;
+}
+
+.progress-file-container {
+  margin-top: 20px;
+}
+
+.file-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: pre;
+}
+
 @media (max-width: 992px) {
   .marginTop10on992 {
     clear: both;
@@ -9,5 +42,9 @@
   .marginTop10on750 {
     padding-top: 10px;
     clear: both;
+  }
+
+  .centered {
+    width: 100%;
   }
 }

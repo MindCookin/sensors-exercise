@@ -1,16 +1,23 @@
-h1 Hello
+.centered
+  h1 Hello and welcome.
+  h3 Please upload some csvs 
+    a.small(href="#!/dashboard") or go to dashboard.
+  .drop-box(ngf-drop="$ctrl.uploadFiles($files)" ngf-select="$ctrl.uploadFiles($files)" ngf-multiple="true" accept=".csv" ngf-dragover-class="$ctrl.dragoverObj" ngf-drop-available="true") Select or drop files
+  span.progress(ng-show="$ctrl.progress >= 0")
+    div(style="width:{{$ctrl.progress}}%" ng-bind="$ctrl.progress + '%'")
 
-button(ngf-select="$ctrl.uploadFiles($files)" multiple
-        accept=".csv" ngf-max-height="1000" ngf-max-size="1MB") Select files
-span.progress(ng-show="$ctrl.progress >= 0")
-  div(style="width:{{ctrl.progress}}%" ng-bind="ctrl.progress + '%'")
+  .progress-file-container(ng-repeat="f in $ctrl.files" style="font:smaller")
+    .col-xs-4.col-sm-2.file-name {{f.name}}
+    .col-xs-8.col-sm-10
+      .progress
+        .progress-bar.progress-bar-striped.active(role="progressbar" aria-valuenow="{{f.progress}}" aria-valuemin="0" aria-valuemax="100" ng-style="{width: f.progress + '%'}")
+          {{f.progress}}% Complete
 
-ul
-  li(ng-repeat="f in $ctrl.files" style="font:smaller") {{f.name}} {{f.$errorParam}}
-    span(class="progress" ng-show="f.progress >= 0")
-      div(style="width:{{f.progress}}%"
-          ng-bind="f.progress + '%'")
-  li(ng-repeat="f in $ctrl.errFiles" style="font:smaller") {{f.name}} {{f.$error}} {{f.$errorParam}}
+  .error-alerts(ng-repeat="f in $ctrl.errFiles") 
+    .alert.alert-danger(role="alert") {{f.name}} {{f.$error}} {{f.$errorParam}}
+  
+  .success-alert(ng-show="self.sendFinished")
+    .alert.alert-success(role="alert") Congratulations, you've upload {{$ctrl.files.length}} files. 
+      a.alert-link(href="#!/dashboard") Go to dashboard and check it out.
 
-p {{$ctrl.errorMsg}}
-p {{$ctrl.uploadFiles}}
+  pre(ng-show="$ctrl.errorMsg") {{$ctrl.errorMsg | json}}
