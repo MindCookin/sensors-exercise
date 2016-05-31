@@ -36,8 +36,11 @@ div(ng-show="$ctrl.labels")
             button.btn.btn-default(type="button" ng-click="$ctrl.onChangeRange(1)" ng-class="{active: $ctrl.filters.range === 1}") {{$ctrl.ranges[1]}}
           .btn-group
             button.btn.btn-default(type="button" ng-click="$ctrl.onChangeRange(2)" ng-class="{active: $ctrl.filters.range === 2}") {{$ctrl.ranges[2]}}
+            
+  div
+    h4 Filtered chart:
+    button.btn.btn-default(ng-click="$ctrl.typeHorizontal === 'Bar' ? $ctrl.typeHorizontal = 'Line' : $ctrl.typeHorizontal = 'Bar'") Toggle Bar / Lines
 
-  button.btn.btn-default(ng-click="$ctrl.typeHorizontal === 'Bar' ? $ctrl.typeHorizontal = 'Line' : $ctrl.typeHorizontal = 'Bar'") Toggle Bar / Lines
   canvas(id="base" class="chart-base" chart-type="$ctrl.typeHorizontal" chart-data="$ctrl.data" chart-labels="$ctrl.labels" chart-legend="true" chart-series="$ctrl.series")
   
   div
