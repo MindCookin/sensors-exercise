@@ -47,3 +47,6 @@ Los puntos de API son:
 * http://localhost:3000/api/dashboard/:name/:from/:to para recoger los datosa mostrar por la gráfica
 
 > NOTA: tanto el front como el back se sirven desde el mismo puerto para prevenir problemas de Cross Origin con Angular en el desarrollo local http://stackoverflow.com/questions/21102690/angularjs-not-detecting-access-control-allow-origin-header
+
+###### csv
+He creado un proceso de Node para generar `.csv` validos en serie. Para ejecutarlo lanzar `npm run generate` desde la raíz del proyecto. Generará una carpeta `/csv` que contendrá un año de métricas aleatorias. 
