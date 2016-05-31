@@ -8,15 +8,14 @@ angular.
 
       DashboardService.getNames()
         .then(function (data) {
-          self.sensors = data.names;
-          self.signals = data.metrics;
+          self.sensors = data.names.sort();
+          self.signals = data.metrics.sort();
         })
 
       var self = this;
       var lastQueryData, filteredData;
       var rangeActions = [toDaily, toWeekly, toMonthly];
       self.typeHorizontal = 'Line';
-      self.typeRound = 'Pie';
 
       self.checkModel = {
         left: false,
@@ -119,7 +118,7 @@ angular.
 
             _.forEach(self.signals, function(k) {
               response[k] = response[k] || [];
-              response[k].push(item.precipitation);
+              response[k].push(item[k]);
             })
           })
 
@@ -150,14 +149,14 @@ angular.
 
             _.forEach(self.signals, function(k) {
               response[k] = response[k] || [];
-              response[k].push(item.precipitation);
+              response[k].push(item[k]);
             })
           })
 
           return response;
         })
 
-        filteredData = _.map(months, _.mean);
+        filteredData = _.map(months, mergeMetrics);
 
         update();
       }
@@ -171,10 +170,14 @@ angular.
 
           if (self.filters.range === 1) { // weekly
             var next = new Date(item.date);
+            dateString = new Date(item.date).toLocaleString();
             next.setDate(item.date.getDate() + 6);
-            dateString = 'Week from ' + dateString + ' to ' + next.toDateString();
+            dateString = dateString.split(' ')[0] + ' to ' + next.toLocaleString().split(' ')[0];
           } else if (self.filters.range === 2) { // monthly
             dateString = dateString.split(' ')[1] + ' ' + dateString.split(' ')[3]
+          } else {
+            dateString = new Date(item.date).toLocaleString();
+            dateString = dateString.split(' ')[0]
           }
 
           return dateString;
@@ -182,7 +185,6 @@ angular.
 
         self.series = self.filters.signal;
         self.data = [];
-        self.dataRound = [];
 
         for (var i = 0, x = self.series.length; i < x; i++) {
 
@@ -192,7 +194,6 @@ angular.
           for (var j = 0, y = data.length; j < y; j++) {
             var result = parseInt(data[j][serieName], 10) || 0;
             serie.push(result);
-            self.dataRound[i] = self.dataRound[i] ? self.dataRound[i] += result : result;
           }
 
           self.data.push(serie);
