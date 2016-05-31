@@ -37,6 +37,11 @@ div(ng-show="$ctrl.labels")
           .btn-group
             button.btn.btn-default(type="button" ng-click="$ctrl.onChangeRange(2)" ng-class="{active: $ctrl.filters.range === 2}") {{$ctrl.ranges[2]}}
 
-canvas(ng-if="$ctrl.labels" id="line" class="chart chart-line" chart-data="$ctrl.data"
-  chart-labels="$ctrl.labels" chart-legend="true" chart-series="$ctrl.series"
-  chart-click="$ctrl.onClick")
+  button.btn.btn-default(ng-click="$ctrl.typeHorizontal === 'Bar' ? $ctrl.typeHorizontal = 'Line' : $ctrl.typeHorizontal = 'Bar'") Toggle Bar / Lines
+  canvas(id="base" class="chart-base" chart-type="$ctrl.typeHorizontal" chart-data="$ctrl.data" chart-labels="$ctrl.labels" chart-legend="true" chart-series="$ctrl.series")
+  
+  div
+    h4 Totals for selected range:
+    button.btn.btn-default(ng-click="$ctrl.typeRound === 'PolarArea' ? $ctrl.typeRound = 'Pie' : $ctrl.typeRound = 'PolarArea'") Toggle Polar / Pie
+  
+  canvas(id="round" class="chart-base" chart-type="$ctrl.typeRound" chart-data="$ctrl.dataRound" chart-labels="$ctrl.series" chart-legend="true")

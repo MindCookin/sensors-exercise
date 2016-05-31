@@ -15,6 +15,8 @@ angular.
       var self = this;
       var lastQueryData, filteredData;
       var rangeActions = [toDaily, toWeekly, toMonthly];
+      self.typeHorizontal = 'Line';
+      self.typeRound = 'Pie';
 
       self.checkModel = {
         left: false,
@@ -115,17 +117,10 @@ angular.
             response.name = item.name;
             response.date = date;
 
-            response.precipitation = response.precipitation || [];
-            response.precipitation.push(item.precipitation);
-
-            response.temperature = response.temperature || [];
-            response.temperature.push(item.temperature);
-
-            response.pressure = response.pressure || [];
-            response.pressure.push(item.pressure);
-
-            response.humidity = response.humidity || [];
-            response.humidity.push(item.humidity);
+            _.forEach(self.signals, function(k) {
+              response[k] = response[k] || [];
+              response[k].push(item.precipitation);
+            })
           })
 
           return response;
@@ -153,23 +148,16 @@ angular.
             response.name = item.name;
             response.date = new Date(item.date).setDate(1);
 
-            response.precipitation = response.precipitation || [];
-            response.precipitation.push(item.precipitation);
-
-            response.temperature = response.temperature || [];
-            response.temperature.push(item.temperature);
-
-            response.pressure = response.pressure || [];
-            response.pressure.push(item.pressure);
-
-            response.humidity = response.humidity || [];
-            response.humidity.push(item.humidity);
+            _.forEach(self.signals, function(k) {
+              response[k] = response[k] || [];
+              response[k].push(item.precipitation);
+            })
           })
 
           return response;
         })
 
-        filteredData = _.map(months, mergeMetrics)
+        filteredData = _.map(months, _.mean);
 
         update();
       }
@@ -194,6 +182,7 @@ angular.
 
         self.series = self.filters.signal;
         self.data = [];
+        self.dataRound = [];
 
         for (var i = 0, x = self.series.length; i < x; i++) {
 
@@ -201,7 +190,9 @@ angular.
           var serieName = self.series[i];
 
           for (var j = 0, y = data.length; j < y; j++) {
-            serie.push(parseInt(data[j][serieName], 10) || 0)
+            var result = parseInt(data[j][serieName], 10) || 0;
+            serie.push(result);
+            self.dataRound[i] = self.dataRound[i] ? self.dataRound[i] += result : result;
           }
 
           self.data.push(serie);
@@ -223,10 +214,9 @@ angular.
       }
 
       function mergeMetrics(item) {
-        item.precipitation = _.mean(item.precipitation);
-        item.temperature = _.mean(item.temperature);
-        item.pressure = _.mean(item.pressure);
-        item.humidity = _.mean(item.humidity);
+        _.forEach(self.signals, function(k) {
+          item[k] = _.mean(item[k]);
+        })
         return item;
       }
     }]
