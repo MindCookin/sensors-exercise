@@ -4,6 +4,8 @@ const _ = require('lodash');
 const Q = require('q');
 const MongoClient = require('mongodb').MongoClient;
 
+const URI = 'mongodb://' + (process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost') + '/sensors';
+
 var db;
 
 function updateOrInsert(queries, index, cb) {
@@ -34,7 +36,7 @@ module.exports = {
   connect: () => {
 
     let deffered = Q.defer();
-    MongoClient.connect("mongodb://localhost/sensors", (err, database) => {
+    MongoClient.connect(URI, (err, database) => {
       if (err) deffered.reject(err);
       db = database;
       console.log('connected to database')
